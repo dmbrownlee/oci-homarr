@@ -4,6 +4,8 @@ services:
     container_name: homarr
     image: ghcr.io/homarr-labs/homarr:latest
     restart: unless-stopped
+    environment:
+      - SECRET_ENCRYPTION_KEY=${KEY}
     volumes:
       - homarr:/appdata
     ports:
