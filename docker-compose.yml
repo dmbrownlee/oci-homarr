@@ -7,8 +7,6 @@ services:
     environment:
       - SECRET_ENCRYPTION_KEY=${KEY}
     volumes:
-      - homarr:/appdata
+      - /appdata/${COMPOSE_PROJECT_NAME}/appdata:/appdata
     ports:
       - '7575:7575'
-volumes:
-  homarr:
