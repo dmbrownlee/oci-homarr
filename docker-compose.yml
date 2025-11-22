@@ -1,12 +1,32 @@
 ---
+version: "3.8"
+
 services:
   homarr:
-    container_name: homarr
-    image: ghcr.io/homarr-labs/homarr:latest
+    hostname: ${COMPOSE_PROJECT_NAME}
+    domainname: ${LOCAL_DOMAIN}
+    image: ghcr.io/homarr-labs/homarr:${HOMARR_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}
     restart: unless-stopped
+    ports:
+      - '80:7575'
+    volumes:
+      - homarr_appdata:/appdata
     environment:
       - SECRET_ENCRYPTION_KEY=${KEY}
-    volumes:
-      - /appdata/${COMPOSE_PROJECT_NAME}/appdata:/appdata
-    ports:
-      - '7575:7575'
+    dns_search: ${LOCAL_DOMAIN}
+    networks:
+      net1:
+        ipv4_address: ${THIS_IP}
+
+networks:
+  net1:
+    external: true
+    name: ${LAN_NAME}
+
+volumes:
+  homarr_appdata:
+    driver_opts:
+      type: "nfs"
+      o: "addr=${NFS_SERVER},nolock,rw,soft,nfsvers=4.2"
+      device: ":${NFS_PATH}/${COMPOSE_PROJECT_NAME}/appdata"
