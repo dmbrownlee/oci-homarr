@@ -9,11 +9,13 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}
     restart: unless-stopped
     ports:
-      - '80:7575'
+      - '7575:7575'
     volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
       - homarr_appdata:/appdata
     environment:
-      - SECRET_ENCRYPTION_KEY=${KEY}
+      TZ: America/Los_Angeles
+      SECRET_ENCRYPTION_KEY: ${SECRET_ENCRYPTION_KEY}
     dns_search: ${LOCAL_DOMAIN}
     networks:
       net1:
